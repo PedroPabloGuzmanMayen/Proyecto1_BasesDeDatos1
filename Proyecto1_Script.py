@@ -6,7 +6,7 @@ params = {
     'host': 'localhost',
     'database': 'postgres',
     'user': 'postgres',
-    'password': '040603xD'
+    'password': 'admin'
 }
 
 
