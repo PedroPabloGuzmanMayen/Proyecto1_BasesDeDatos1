@@ -27,3 +27,21 @@ games g on t."teamID" = g."homeTeamID" or t."teamID" = g."awayTeamID"
 join 
 leagues l on g."leagueID" = l."leagueID" 
 group by t."name" order by "Liga";
+
+--Diferencia de goles
+
+select "HomeGoals"."homeTeamID", t."name", l."name" as "Liga",
+("HomeGoals"."homeFGoals" + "AwayGoals"."awayFGoals") as "Goles a favor",
+("HomeGoals"."awayCGoals" + "AwayGoals"."homeCGoals") as "Goles en contra",
+(("HomeGoals"."homeFGoals" + "AwayGoals"."awayFGoals") - ("HomeGoals"."awayCGoals" + "AwayGoals"."homeCGoals")) as "Diferencia de Gol"
+from
+(select "homeTeamID", sum("homeGoals") as "homeFGoals", sum("awayGoals") as "awayCGoals", string_agg(distinct "leagueID"::text, ' ') as "Liga"
+from games group by "homeTeamID" order by "homeTeamID" desc)
+as "HomeGoals"
+join 
+(select "awayTeamID", sum("awayGoals") as "awayFGoals", sum("homeGoals") as "homeCGoals" from games group by "awayTeamID" order by "awayTeamID" desc)
+as "AwayGoals"
+on "HomeGoals"."homeTeamID" = "AwayGoals"."awayTeamID"
+join teams t on "HomeGoals"."homeTeamID" = t."teamID"
+join leagues l on "HomeGoals"."Liga"::int = l."leagueID" 
+order by "Diferencia de Gol" desc;
