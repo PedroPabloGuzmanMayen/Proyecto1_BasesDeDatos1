@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-# Crear el motor de la base de datos
-engine = create_engine('postgresql://postgres:040603xD@localhost/soccer')
+# Crear el motor de la base de datos (si se quiere usar el script, cambiar contraeña, usuario y lo que sea pertinente)
+engine = create_engine('postgresql://postgres:admin@localhost/soccer')
 
 # Query con todos los datos necesarios para el analisis
 query = """
